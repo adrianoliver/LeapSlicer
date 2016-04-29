@@ -3,15 +3,21 @@ import unittest
 import vtk, qt, ctk, slicer
 from slicer.ScriptedLoadableModule import *
 import logging
+import threading
+import time
 
 import sys
 # tried many other ways of importing this, to no avail: change to the absolute path of where the leapSDK is on your computer
-sys.path.insert(0, "/home/normit/Documents/LeapSDK/lib/x64")
-sys.path.insert(0, "/home/normit/Documents/LeapSDK/lib")
+sys.path.insert(0, "/Program Files (x86)/Leap Motion/LeapDeveloperKit_2.3.1+31549_win/LeapSDK/lib/x64")
+sys.path.insert(0, "/Program Files (x86)/Leap Motion/LeapDeveloperKit_2.3.1+31549_win/LeapSDK/lib")
 
 import Leap
 
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
+
+def hello():
+  print "hello"
+
 
 #
 # leap_test
@@ -96,6 +102,8 @@ class leap_testLogic(ScriptedLoadableModuleLogic):
     self.controller.add_listener(self.listener)
     # instantiate the stuff to do with slicer
     self.slicer = Slicer()
+    t = threading.Timer(3.0, hello)
+    t.start()
 
   def stop(self):
     print "Stopping Leap Controller Reads"
@@ -127,7 +135,7 @@ class SampleListener(Leap.Listener):
     for gesture in frame.gestures():
       if gesture.type == Leap.Gesture.TYPE_CIRCLE:
         print "Circle gesture detected"
-        onCircleGesture(gesture)
+        self.slicer.onCircleGesture(gesture)
         # call function that you want to happen when a circle gesture is detected
 
 #
