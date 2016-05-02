@@ -1,4 +1,4 @@
-import os
+﻿import os
 import unittest
 import vtk, qt, ctk, slicer
 from slicer.ScriptedLoadableModule import *
@@ -143,14 +143,17 @@ class SampleListener(Leap.Listener):
 #
 class Slicer():
     def __init__(self):
-        self.lm=slicer.app.layoutManager()
-        self.view=self.lm.threeDWidget(0).threeDView()
-        self.view.setPitchRollYawIncrement(10)
+        transformable = slicer.util.getNode('MRHead')
+        transform = slicer.vtkMRMLLinearTransformNode()
+        slicer.mrmlScene.AddNode(transform)
+        newTransform = vtk.vtkTransform()
+        transformable.SetAndObserveTransformNodeID(transform.GetID()) 
 
     def onCircleGesture(self, gesture):
-        print "do something..."
+        newTransform.RotateZ(10)
+        transform.SetMatrixTransformToParent(newTransform.GetMatrix())
         # TODO: get the information out of the gesture, to figure out if should move clockwise or counterclockwise
-        self.view.roll()
+        
 
 
 
