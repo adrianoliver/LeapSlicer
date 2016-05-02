@@ -18,7 +18,19 @@ from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 def hello():
     print "hello"
 
+"""run = False
+timeold = time.clock()
+timenew = time.clock()
 
+while run == True:
+    timenew = time.clock()
+    if timenew-timeold >= 0.01:
+        getLeapData()
+        timeold = timenew
+
+def getLeapData():
+    hello()""" 
+# Possible timer but not the best solution (while loop to put arround whole code)
 #
 # leap_test
 #
@@ -75,9 +87,11 @@ class leap_testWidget(ScriptedLoadableModuleWidget):
         # instantiate (calls init) the logic
         # TODO: should check if its already initilized... otherwise could create many of them and be confusing
         self.logic = leap_testLogic()
+        run = True
 
     def onStopButton(self):
         self.logic.stop()
+        Run = False
 
 
 #
@@ -102,8 +116,7 @@ class leap_testLogic(ScriptedLoadableModuleLogic):
         self.controller.add_listener(self.listener)
         # instantiate the stuff to do with slicer
         self.slicer = Slicer()
-        t = threading.Timer(3.0, hello)
-        t.start()
+        
 
     def stop(self):
         print "Stopping Leap Controller Reads"
